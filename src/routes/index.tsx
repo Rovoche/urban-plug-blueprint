@@ -34,7 +34,7 @@ const QUESTIONS: Question[] = [
     id: "journey",
     section: "02 · Customer Journey",
     title:
-      "When someone discovers Urban Plug from TikTok or Instagram, what currently happens from first message to confirmed booking?",
+      "When someone discovers Urban Plug on TikTok or Instagram, what happens between that first message and a confirmed booking?",
     kind: "text",
     placeholder: "Walk us through the full flow, in your own words…",
   },
@@ -247,12 +247,12 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       </h1>
       <div className="my-8 h-px w-24 bg-cocoa/40" />
       <p className="text-serif text-xl italic text-cocoa sm:text-2xl">
-        Building the foundation for your next stage.
+        A considered beginning for what comes next.
       </p>
       <p className="mt-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-        Thank you for taking the time to share your vision. These questions help us understand
-        where Urban Plug is today, where you're going, and how your digital experience should
-        support that growth.
+        Thank you for taking the time for this. The questions ahead are simple, but the
+        answers matter: they will shape how we understand where Urban Plug stands today,
+        where it is headed, and the kind of digital experience that can carry it there.
       </p>
       <div className="mt-12">
         <button
@@ -410,8 +410,8 @@ function ThankYou() {
       </h2>
       <div className="mx-auto my-8 h-px w-24 bg-cocoa/40" />
       <p className="mx-auto max-w-lg text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-        Your answers will help us prepare a proposal built around Urban Plug's actual goals, not a
-        generic website package.
+        What you've shared here will guide a proposal built specifically around Urban Plug,
+        considered from the ground up rather than assembled from a template.
       </p>
     </section>
   );
@@ -420,14 +420,22 @@ function ThankYou() {
 function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <section className="animate-[fade-in_0.5s_ease-out] flex flex-1 flex-col justify-center py-16 text-center">
-      <h2 className="text-serif text-3xl text-espresso">Something went wrong</h2>
-      <p className="mx-auto mt-3 max-w-md text-muted-foreground">Please try again.</p>
-      <div className="mt-8">
+      <p className="mb-6 text-[11px] uppercase tracking-[0.4em] text-cocoa">A Brief Interruption</p>
+      <h2 className="text-serif text-3xl italic text-espresso sm:text-4xl">
+        Your response didn't go through
+      </h2>
+      <div className="mx-auto my-8 h-px w-24 bg-cocoa/40" />
+      <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
+        Please try again. If it happens a second time, reach us directly and we'll take it
+        from there.
+      </p>
+      <div className="mt-10">
         <button
           onClick={onRetry}
-          className="inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory transition hover:bg-cocoa"
+          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 hover:bg-cocoa hover:shadow-[var(--shadow-luxe)]"
         >
           Try again
+          <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
         </button>
       </div>
     </section>
@@ -451,8 +459,9 @@ function FloatingPill() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-5 z-50 flex justify-center px-4">
       <a
-        href="#"
-        onClick={(e) => e.preventDefault()}
+        href="https://rovoche.com"
+        target="_blank"
+        rel="noopener noreferrer"
         className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-espresso/15 bg-ivory/85 px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-espresso shadow-[var(--shadow-soft)] backdrop-blur-md transition hover:bg-ivory"
       >
         <span className="h-1.5 w-1.5 rounded-full bg-cocoa" />
