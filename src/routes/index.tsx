@@ -365,7 +365,19 @@ function QuestionCard({
         </p>
       )}
 
-      <div className="mt-10 space-y-3">
+      {q.kind === "multi" && (
+        <p className="mt-5 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+          Select all that apply
+          {(answers.selected?.length || 0) > 0 && (
+            <span className="text-cocoa">
+              {" "}
+              · {answers.selected!.length} selected
+            </span>
+          )}
+        </p>
+      )}
+
+      <div className={q.kind === "multi" ? "mt-6 space-y-3" : "mt-10 space-y-3"}>
         {q.kind === "multi" &&
           q.options.map((opt, idx) => {
             const selected = answers.selected?.includes(opt);
