@@ -102,6 +102,7 @@ type Answers = Record<string, { selected?: string[]; note?: string; text?: strin
 function Discovery() {
   const [stage, setStage] = useState<"hero" | "quiz" | "done" | "error">("hero");
   const [step, setStep] = useState(0);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [answers, setAnswers] = useState<Answers>({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -203,11 +204,20 @@ function Discovery() {
             step={step}
             total={total}
             progress={progress}
+            direction={direction}
             onToggle={toggle}
             onNote={setNote}
             onText={setText}
-            onPrev={() => (step === 0 ? setStage("hero") : setStep(step - 1))}
-            onNext={() => (step === total - 1 ? submit() : setStep(step + 1))}
+            onPrev={() => {
+              setDirection("prev");
+              if (step === 0) setStage("hero");
+              else setStep(step - 1);
+            }}
+            onNext={() => {
+              setDirection("next");
+              if (step === total - 1) submit();
+              else setStep(step + 1);
+            }}
             submitting={submitting}
           />
         )}
@@ -237,33 +247,51 @@ function Header() {
 
 function Hero({ onBegin }: { onBegin: () => void }) {
   return (
-    <section className="animate-[fade-in_0.8s_ease-out] flex flex-1 flex-col justify-center py-8">
-      <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-cocoa">
+    <section className="flex flex-1 flex-col justify-center py-8">
+      <p
+        className="animate-premium-in mb-6 text-[10px] uppercase tracking-[0.4em] text-cocoa"
+        style={{ animationDelay: "0ms" }}
+      >
         Prepared for Urban Plug
       </p>
-      <h1 className="text-serif text-[2.75rem] leading-[1.05] text-espresso sm:text-6xl">
+      <h1
+        className="animate-premium-in text-serif text-[2.75rem] leading-[1.05] text-espresso sm:text-6xl"
+        style={{ animationDelay: "80ms" }}
+      >
         Urban Plug<br />
         <span className="italic text-cocoa">Brand Direction</span>
       </h1>
-      <div className="my-8 h-px w-24 bg-cocoa/40" />
-      <p className="text-serif text-xl italic text-cocoa sm:text-2xl">
+      <div
+        className="animate-premium-in my-8 h-px w-24 bg-cocoa/40"
+        style={{ animationDelay: "200ms" }}
+      />
+      <p
+        className="animate-premium-in text-serif text-xl italic text-cocoa sm:text-2xl"
+        style={{ animationDelay: "260ms" }}
+      >
         A considered beginning for what comes next.
       </p>
-      <p className="mt-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+      <p
+        className="animate-premium-in mt-8 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-base"
+        style={{ animationDelay: "340ms" }}
+      >
         Thank you for taking the time for this. The questions ahead are simple, but the
         answers matter: they will shape how we understand where Urban Plug stands today,
         where it is headed, and the kind of digital experience that can carry it there.
       </p>
-      <div className="mt-12">
+      <div className="animate-premium-in mt-12" style={{ animationDelay: "440ms" }}>
         <button
           onClick={onBegin}
-          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-8 py-4 text-[13px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 hover:bg-cocoa hover:shadow-[var(--shadow-luxe)]"
+          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-8 py-4 text-[13px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 hover:bg-cocoa hover:shadow-[var(--shadow-luxe)] active:scale-[0.98]"
         >
           Begin Discovery
           <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
         </button>
       </div>
-      <p className="mt-10 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+      <p
+        className="animate-premium-in mt-10 text-[11px] uppercase tracking-[0.3em] text-muted-foreground"
+        style={{ animationDelay: "520ms" }}
+      >
         6 questions · about 5 minutes
       </p>
     </section>
@@ -276,6 +304,7 @@ function QuestionCard({
   step,
   total,
   progress,
+  direction,
   onToggle,
   onNote,
   onText,
@@ -288,6 +317,7 @@ function QuestionCard({
   step: number;
   total: number;
   progress: number;
+  direction: "next" | "prev";
   onToggle: (o: string) => void;
   onNote: (v: string) => void;
   onText: (v: string) => void;
@@ -302,7 +332,13 @@ function QuestionCard({
   const isLast = step === total - 1;
 
   return (
-    <section className="animate-[fade-in_0.5s_ease-out] flex flex-1 flex-col py-4">
+    <section
+      className={
+        direction === "next"
+          ? "animate-premium-in-next flex flex-1 flex-col py-4"
+          : "animate-premium-in-prev flex flex-1 flex-col py-4"
+      }
+    >
       <div className="mb-10">
         <div className="mb-3 flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
           <span>
@@ -331,15 +367,16 @@ function QuestionCard({
 
       <div className="mt-10 space-y-3">
         {q.kind === "multi" &&
-          q.options.map((opt) => {
+          q.options.map((opt, idx) => {
             const selected = answers.selected?.includes(opt);
             return (
               <button
                 key={opt}
                 type="button"
                 onClick={() => onToggle(opt)}
+                style={{ animationDelay: `${120 + idx * 55}ms` }}
                 className={[
-                  "group flex w-full items-center justify-between rounded-2xl border px-5 py-4 text-left transition-all duration-300",
+                  "animate-premium-in group flex w-full items-center justify-between rounded-2xl border px-5 py-4 text-left transition-all duration-300 active:scale-[0.98]",
                   selected
                     ? "border-espresso bg-espresso text-ivory shadow-[var(--shadow-soft)]"
                     : "border-border bg-card hover:border-cocoa/50 hover:bg-secondary/60",
@@ -348,8 +385,10 @@ function QuestionCard({
                 <span className="text-[15px]">{opt}</span>
                 <span
                   className={[
-                    "flex h-5 w-5 items-center justify-center rounded-full border text-[10px] transition",
-                    selected ? "border-ivory bg-ivory text-espresso" : "border-border text-transparent",
+                    "flex h-5 w-5 items-center justify-center rounded-full border text-[10px] transition-all duration-300",
+                    selected
+                      ? "scale-100 border-ivory bg-ivory text-espresso"
+                      : "scale-90 border-border text-transparent",
                   ].join(" ")}
                 >
                   ✓
@@ -382,14 +421,14 @@ function QuestionCard({
       <div className="mt-12 flex items-center justify-between gap-4">
         <button
           onClick={onPrev}
-          className="text-[12px] uppercase tracking-[0.28em] text-muted-foreground transition hover:text-espresso"
+          className="text-[12px] uppercase tracking-[0.28em] text-muted-foreground transition hover:text-espresso active:scale-[0.98]"
         >
           ← {step === 0 ? "Intro" : "Previous"}
         </button>
         <button
           onClick={onNext}
           disabled={!canProceed || submitting}
-          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 enabled:hover:bg-cocoa enabled:hover:shadow-[var(--shadow-luxe)] disabled:cursor-not-allowed disabled:opacity-40"
+          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 enabled:hover:bg-cocoa enabled:hover:shadow-[var(--shadow-luxe)] enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
         >
           {submitting ? "Sending…" : isLast ? "Submit Discovery" : "Continue"}
           <span className="transition-transform duration-500 group-enabled:group-hover:translate-x-1">
@@ -403,13 +442,27 @@ function QuestionCard({
 
 function ThankYou() {
   return (
-    <section className="animate-[fade-in_0.8s_ease-out] flex flex-1 flex-col justify-center py-16 text-center">
-      <p className="mb-6 text-[11px] uppercase tracking-[0.4em] text-cocoa">Received</p>
-      <h2 className="text-serif text-5xl italic leading-tight text-espresso sm:text-6xl">
+    <section className="flex flex-1 flex-col justify-center py-16 text-center">
+      <p
+        className="animate-premium-in mb-6 text-[11px] uppercase tracking-[0.4em] text-cocoa"
+        style={{ animationDelay: "0ms" }}
+      >
+        Received
+      </p>
+      <h2
+        className="animate-premium-in text-serif text-5xl italic leading-tight text-espresso sm:text-6xl"
+        style={{ animationDelay: "100ms" }}
+      >
         Thank you
       </h2>
-      <div className="mx-auto my-8 h-px w-24 bg-cocoa/40" />
-      <p className="mx-auto max-w-lg text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+      <div
+        className="animate-premium-in mx-auto my-8 h-px w-24 bg-cocoa/40"
+        style={{ animationDelay: "220ms" }}
+      />
+      <p
+        className="animate-premium-in mx-auto max-w-lg text-[15px] leading-relaxed text-muted-foreground sm:text-base"
+        style={{ animationDelay: "300ms" }}
+      >
         What you've shared here will guide a proposal built specifically around Urban Plug,
         considered from the ground up rather than assembled from a template.
       </p>
@@ -419,20 +472,34 @@ function ThankYou() {
 
 function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
-    <section className="animate-[fade-in_0.5s_ease-out] flex flex-1 flex-col justify-center py-16 text-center">
-      <p className="mb-6 text-[11px] uppercase tracking-[0.4em] text-cocoa">A Brief Interruption</p>
-      <h2 className="text-serif text-3xl italic text-espresso sm:text-4xl">
+    <section className="flex flex-1 flex-col justify-center py-16 text-center">
+      <p
+        className="animate-premium-in mb-6 text-[11px] uppercase tracking-[0.4em] text-cocoa"
+        style={{ animationDelay: "0ms" }}
+      >
+        A Brief Interruption
+      </p>
+      <h2
+        className="animate-premium-in text-serif text-3xl italic text-espresso sm:text-4xl"
+        style={{ animationDelay: "100ms" }}
+      >
         Your response didn't go through
       </h2>
-      <div className="mx-auto my-8 h-px w-24 bg-cocoa/40" />
-      <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
+      <div
+        className="animate-premium-in mx-auto my-8 h-px w-24 bg-cocoa/40"
+        style={{ animationDelay: "200ms" }}
+      />
+      <p
+        className="animate-premium-in mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground"
+        style={{ animationDelay: "280ms" }}
+      >
         Please try again. If it happens a second time, reach us directly and we'll take it
         from there.
       </p>
-      <div className="mt-10">
+      <div className="animate-premium-in mt-10" style={{ animationDelay: "380ms" }}>
         <button
           onClick={onRetry}
-          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 hover:bg-cocoa hover:shadow-[var(--shadow-luxe)]"
+          className="group inline-flex items-center gap-3 rounded-full bg-espresso px-7 py-3.5 text-[12px] uppercase tracking-[0.28em] text-ivory shadow-[var(--shadow-soft)] transition-all duration-500 hover:bg-cocoa hover:shadow-[var(--shadow-luxe)] active:scale-[0.98]"
         >
           Try again
           <span className="transition-transform duration-500 group-hover:translate-x-1">→</span>
@@ -462,7 +529,8 @@ function FloatingPill() {
         href="https://rovoche.com"
         target="_blank"
         rel="noopener noreferrer"
-        className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-espresso/15 bg-ivory/85 px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-espresso shadow-[var(--shadow-soft)] backdrop-blur-md transition hover:bg-ivory"
+        style={{ animationDelay: "700ms" }}
+        className="animate-premium-in pointer-events-auto inline-flex items-center gap-2 rounded-full border border-espresso/15 bg-ivory/85 px-4 py-2 text-[10px] uppercase tracking-[0.3em] text-espresso shadow-[var(--shadow-soft)] backdrop-blur-md transition hover:bg-ivory active:scale-[0.97]"
       >
         <span className="h-1.5 w-1.5 rounded-full bg-cocoa" />
         Built by ROVOCHÉ
