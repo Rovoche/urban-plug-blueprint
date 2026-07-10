@@ -86,10 +86,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Urban Plug Discovery — by ROVOCHÉ" },
       {
         property: "og:description",
-        content: "Building the foundation for your next stage.",
+        content: "A private strategy discovery for Urban Plug — understanding the vision, journey, and foundation for the next stage.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Urban Plug Discovery — by ROVOCHÉ" },
+      { name: "twitter:description", content: "A private strategy discovery for Urban Plug — understanding the vision, journey, and foundation for the next stage." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3da27729-3b61-4f29-8e06-ac2a4894e3b7/id-preview-14ded46d--b0b05d12-5552-433f-a808-a2a4a8fe79dd.lovable.app-1783710229804.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3da27729-3b61-4f29-8e06-ac2a4894e3b7/id-preview-14ded46d--b0b05d12-5552-433f-a808-a2a4a8fe79dd.lovable.app-1783710229804.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
